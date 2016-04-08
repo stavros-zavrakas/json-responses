@@ -5,11 +5,6 @@ var _ = require('lodash');
 
 var constants = require('../constants');
 
-var getErrorCodeTranslation = require('../lang/getErrorCodeTranslation');
-
-var englishErrCodeTranslations = require('../lang/en');
-var greekErrCodeTranslations = require('../lang/gr');
-
 var typesToCheck = [
   'string',
   null,
@@ -23,7 +18,6 @@ var typesToCheck = [
 ];
 
 var lib;
-var getErrorCodeTranslationStub = sinon.stub();
 var data;
 var error;
 var getResObj;
@@ -57,15 +51,9 @@ describe('The aop-ajax-responses module', function () {
       data: 'data'
     };
 
-    error = {
-      code: 'ERR_000100',
-      message: englishErrCodeTranslations.ERR_000100
-    };
-
-    getErrorCodeTranslationStub.reset();
-
+    // @todo: stub i18n-future
     lib = proxyquire('../lib/index', {
-      '../lang/getErrorCodeTranslation': getErrorCodeTranslationStub
+
     });
   });
 
@@ -155,43 +143,6 @@ describe('The aop-ajax-responses module', function () {
     it('sets the correct status code on the request', function () {
       sendErrorResponse(req, res, data);
       assert.strictEqual(getLastCallArgs(res.status)[0], constants.HTTP_CODES.OK);
-    });
-  });
-
-
-  describe('when translating english error codes', function () {
-    it('provides the correct translation for the error code', function (done) {
-      getErrorCodeTranslation('en', error.code, {}, function (err, errMsg) {
-        assert.typeOf(errMsg, 'string');
-        assert.equal(errMsg, englishErrCodeTranslations[error.code]);
-        done();
-      });
-    });
-
-    it('provides the the default translation for an unknown error code', function (done) {
-      getErrorCodeTranslation('en', 'blah', {}, function (err, errMsg) {
-        assert.typeOf(errMsg, 'string');
-        assert.equal(errMsg, englishErrCodeTranslations.defaultTranslation);
-        done();
-      });
-    });
-  });
-
-  describe('when translating greek error codes', function () {
-    it('provides the correct translation for the error code', function (done) {
-      getErrorCodeTranslation('gr', error.code, {}, function (err, errMsg) {
-        assert.typeOf(errMsg, 'string');
-        assert.equal(errMsg, greekErrCodeTranslations[error.code]);
-        done();
-      });
-    });
-
-    it('provides the the default translation for an unknown error code', function (done) {
-      getErrorCodeTranslation('gr', 'blah', {}, function (err, errMsg) {
-        assert.typeOf(errMsg, 'string');
-        assert.equal(errMsg, greekErrCodeTranslations.defaultTranslation);
-        done();
-      });
     });
   });
 
