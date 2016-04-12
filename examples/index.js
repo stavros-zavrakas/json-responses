@@ -1,6 +1,6 @@
 var express = require('express');
 
-var responses = require('json-responses')({
+var responses = require('../lib')({
   baseDir: __dirname
 });
 

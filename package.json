@@ -7,7 +7,11 @@
     "lint": "jshint lib/**.js",
     "test": "mocha test/"
   },
-  "author": "",
+  "author": "Stavros Zavrakas",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stavros-zavrakas/json-responses"
+  },
   "license": "ISC",
   "dependencies": {
     "express": "^4.13.4",
